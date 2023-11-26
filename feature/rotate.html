@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Rotation and Mirroring</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input {
+            display: none;
+        }
+
+        label {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        label:hover {
+            background-color: #2980b9;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 400px;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        a {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Image Rotation and Mirroring</h1>
+
+<label for="imageInput">Choose an Image</label>
+<input type="file" id="imageInput" accept="image/*">
+<img id="uploadedImage" alt="Uploaded Image">
+
+<button onclick="rotateImage(90)">Rotate 90°</button>
+<button onclick="rotateImage(-90)">Rotate -90°</button>
+<button onclick="mirrorImage()">Mirror</button>
+<button onclick="downloadImage()">Download</button>
+
+<script>
+    let currentRotation = 0;
+    let mirrored = false;
+
+    document.getElementById('imageInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('uploadedImage').src = e.target.result;
+            currentRotation = 0;
+            mirrored = false;
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    function rotateImage(degrees) {
+        currentRotation += degrees;
+        document.getElementById('uploadedImage').style.transform = `rotate(${currentRotation}deg)`;
+    }
+
+    function mirrorImage() {
+        mirrored = !mirrored;
+        const scale = mirrored ? -1 : 1;
+        document.getElementById('uploadedImage').style.transform = `scaleX(${scale}) rotate(${currentRotation}deg)`;
+    }
+
+    function downloadImage() {
+        const img = document.getElementById('uploadedImage');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'modified_image.png';
+        link.click();
+    }
+</script>
+
+</body>
+</html>

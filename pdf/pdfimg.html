@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Image Converter</title>
+    <link rel="stylesheet" href="https://unpkg.com/pdfjs-dist@2.10.377/build/pdf_viewer.css">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+         
+            background-color: #f4f4f4;
+        }
+
+        input[type="file"] {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #3498db; /* Blue color */
+    color: #fff; /* White text color */
+    cursor: pointer;
+    display: inline-block; /* Add this line to make it visible */
+}
+
+        canvas {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            max-width: 40%;
+             /* Make sure the canvas doesn't exceed its container */
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71; /* Green color */
+            color: #fff; /* White text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="pdfInput" accept=".pdf">
+    <canvas id="pdfCanvas" width="400" height="600"></canvas>
+    <button id="downloadButton" disabled>Download Image</button>
+
+    <script src="https://unpkg.com/pdfjs-dist@2.10.377/build/pdf.js"></script>
+    <script src="https://unpkg.com/pdfjs-dist@2.10.377/build/pdf.worker.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

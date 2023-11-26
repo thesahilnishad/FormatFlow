@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JPG to WebP Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        a.download-btn {
+            display: initial;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JPG to WebP Converter</h1>
+    </header>
+    <div class="container">
+        <p>Select a JPG image to convert it to WebP:</p>
+        <input type="file" accept=".jpg" id="fileInput">
+        <label for="fileInput">Choose Image</label>
+        <img id="outputImage" src="" alt="Converted Image" style="display: none;">
+        <a id="downloadBtn" class="download-btn" download="converted.webp">Download WebP</a>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const outputImage = document.getElementById('outputImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file && file.type === 'image/jpeg') {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = function () {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
+                        const webpDataUrl = canvas.toDataURL('image/webp');
+                        outputImage.src = webpDataUrl;
+                        outputImage.style.display = 'block';
+                        downloadBtn.href = webpDataUrl;
+                        downloadBtn.style.display = 'block';
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

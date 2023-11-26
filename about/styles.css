@@ -1,0 +1,91 @@
+/* Reset some default styles */
+body,
+h1,
+h2,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    background-size: cover;
+
+
+}
+
+#education {
+    margin-top: 50px;
+}
+
+#goals {
+    margin-top: 50px;
+}
+
+nav ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+nav li {
+    display: inline;
+    margin: 0 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #1dd2ff;
+}
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    padding-right: 20px;
+    background-color: #fde6e6;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: justify;
+    line-height: 1.6;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1dd2ff;
+    color: #fff;
+}
+#heading {
+    color: #d11e1e;
+    padding: 20px 0;
+    margin-right: 20pxpx;
+    margin-left: 20px;
+
+}
+#header {
+    text-align: center;
+}
+#pfp {
+    float: left;
+    padding-right: 10px;
+    position: relative;
+    bottom: 15px;
+    margin-bottom: 2px;
+    /* position: absolute; */
+}
+#about .container {
+    height: auto;
+    
+
+}
+#ab {
+
+    background-color: #1dd2ff00;
+}

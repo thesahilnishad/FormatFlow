@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Filters and Adjustments</title>
+  <style>
+   body {
+  display: flex;
+  flex-direction: row; /* Change to row to place elements side by side */
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+}
+
+    #image-container {
+      text-align: center;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Fixed: Apply box-shadow to #image-container */
+      margin: 20px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #image {
+  max-width: 100%;
+  max-height: 400px;
+  margin: 20px 0;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+    .filter-controls, .adjustment-controls {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    select, input[type="range"] {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    #download-btn {
+      padding: 10px 15px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    #download-btn:hover {
+      background-color: #45a049;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="image-container">
+    <button onclick="chooseImage()">Choose Image</button>
+    <input type="file" id="imageInput" style="display: none" accept="image/*" onchange="loadImage()">
+    <img id="image" src="example.jpg" alt="Original Image">
+    <div class="filter-controls">
+      <label for="filter">Color Filter:</label>
+      <select id="filter">
+        <option value="none">None</option>
+        <option value="grayscale">Grayscale</option>
+        <option value="sepia">Sepia</option>
+        <option value="invert">Invert</option>
+        <option value="blur">Blur</option>
+        <option value="brightness">Brightness</option>
+        <option value="contrast">Contrast</option>
+        <option value="saturate">Saturate</option>
+        <option value="opacity">Opacity</option>
+        <option value="hue-rotate">Hue Rotate</option>
+      </select>
+    </div>
+    <div class="adjustment-controls">
+      <label for="brightness">Brightness:</label>
+      <input type="range" id="brightness" min="0" max="200" value="100">
+      <br>
+      <label for="contrast">Contrast:</label>
+      <input type="range" id="contrast" min="0" max="200" value="100">
+      <br>
+      <label for="hue">Hue:</label>
+      <input type="range" id="hue" min="0" max="360" value="0">
+      <br>
+      <label for="saturation">Saturation:</label>
+      <input type="range" id="saturation" min="0" max="200" value="100">
+      <br>
+      <label for="opacity">Opacity:</label>
+      <input type="range" id="opacity" min="0" max="1" step="0.1" value="1">
+    </div>
+    <button id="download-btn" onclick="downloadImage()">Download</button>
+  </div>
+
+  <script>
+    function chooseImage() {
+      document.getElementById('imageInput').click();
+    }
+
+    function loadImage() {
+      const input = document.getElementById('imageInput');
+      const image = document.getElementById('image');
+      const filterSelect = document.getElementById('filter');
+
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          image.src = e.target.result;
+          // Reset filter when a new image is loaded
+          filterSelect.value = 'none';
+          applyFilters();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function downloadImage() {
+      const image = document.getElementById('image');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      // Apply filters to the canvas
+      ctx.filter = image.style.filter;
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      // Create a download link
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'filtered_image.png';
+      link.click();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const image = document.getElementById('image');
+      const filterSelect = document.getElementById('filter');
+      const brightnessInput = document.getElementById('brightness');
+      const contrastInput = document.getElementById('contrast');
+      const hueInput = document.getElementById('hue');
+      const saturationInput = document.getElementById('saturation');
+      const opacityInput = document.getElementById('opacity');
+
+      // Event listeners for input changes
+      filterSelect.addEventListener('change', applyFilters);
+      brightnessInput.addEventListener('input', applyFilters);
+      contrastInput.addEventListener('input', applyFilters);
+      hueInput.addEventListener('input', applyFilters);
+      saturationInput.addEventListener('input', applyFilters);
+      opacityInput.addEventListener('input', applyFilters);
+
+      function applyFilters() {
+        const filterValue = filterSelect.value;
+        const brightnessValue = brightnessInput.value;
+        const contrastValue = contrastInput.value;
+        const hueValue = hueInput.value;
+        const saturationValue = saturationInput.value;
+        const opacityValue = opacityInput.value;
+
+        if (filterValue === 'none') {
+          image.style.filter = `brightness(${brightnessValue}%) contrast(${contrastValue}%) hue-rotate(${hueValue}deg) saturate(${saturationValue}%) opacity(${opacityValue})`;
+        } else {
+          image.style.filter = `${getFilterStyle(filterValue)} brightness(${brightnessValue}%) contrast(${contrastValue}%) hue-rotate(${hueValue}deg) saturate(${saturationValue}%) opacity(${opacityValue})`;
+        }
+      }
+
+      function getFilterStyle(filter) {
+        switch (filter) {
+          case 'grayscale':
+            return 'grayscale(100%)';
+          case 'sepia':
+            return 'sepia(100%)';
+          case 'invert':
+            return 'invert(100%)';
+          case 'blur':
+            return 'blur(5px)';
+          case 'brightness':
+            return 'brightness(150%)';
+          case 'contrast':
+            return 'contrast(150%)';
+          case 'saturate':
+            return 'saturate(200%)';
+          case 'opacity':
+            return 'opacity(0.7)';
+          case 'hue-rotate':
+            return 'hue-rotate(90deg)';
+          default:
+            return 'none';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

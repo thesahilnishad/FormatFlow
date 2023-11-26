@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        label:hover {
+            background-color: #555;
+        }
+
+        div {
+            margin-bottom: 10px;
+        }
+
+        input[type="range"] {
+            width: 80%;
+            margin-left: 10%;
+            background: #f2f2f2;
+            border: none;
+        }
+
+        button,
+        a {
+            display: none;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover,
+        a:hover {
+            background-color: #555;
+        }
+
+        p#fileSizeInfo {
+            font-size: 16px;
+            font-weight: bold;
+            display: none;
+            margin-top: 10px;
+        }
+
+        img#previewImage {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Additional CSS for buttons and form elements */
+        .download-btn {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .compress-btn {
+            display: inline-block;
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .compress-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Image Compressor</h1>
+    </header>
+    <div class="container">
+        <p>Select an image to compress:</p>
+        <input type="file" accept="image/*" id="fileInput">
+        <label for="fileInput">Choose Image</label>
+        <div>
+            <label for="qualityInput">Compression Quality:</label>
+            <input type="range" id="qualityInput" min="0" max="1" step="0.01" value="0.7">
+            <span id="qualityValue">0.7</span>
+        </div>
+        <div>
+            <label for="sizeInput">Target File Size (KB):</label>
+            <input type="number" id="sizeInput" min="1" value="100">
+        </div>
+        <button id="compressBtn" class="compress-btn">Compress Image</button>
+        <a id="downloadBtn" class="download-btn" download="compressed_image.jpg">Download Compressed Image</a>
+        <p id="fileSizeInfo" style="display: none;">Estimated File Size: <span id="estimatedSize">0 KB</span></p>
+        <img id="previewImage" src="" alt="Preview" style="max-width: 100%; margin-top: 20px;">
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const qualityInput = document.getElementById('qualityInput');
+        const qualityValue = document.getElementById('qualityValue');
+        const sizeInput = document.getElementById('sizeInput');
+        const compressBtn = document.getElementById('compressBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const fileSizeInfo = document.getElementById('fileSizeInfo');
+        const estimatedSize = document.getElementById('estimatedSize');
+        const previewImage = document.getElementById('previewImage');
+
+        qualityInput.addEventListener('input', function () {
+            qualityValue.textContent = qualityInput.value;
+            updateEstimatedSize();
+        });
+
+        sizeInput.addEventListener('input', function () {
+            updateEstimatedSize();
+        });
+
+        function updateEstimatedSize() {
+            const quality = parseFloat(qualityInput.value);
+            const sizeKB = parseFloat(sizeInput.value);
+            const imageSizeMB = previewImage.src.length / (1024 * 1024);
+            const estimatedSizeKB = (imageSizeMB * quality).toFixed(2);
+            estimatedSize.textContent = estimatedSizeKB + ' KB';
+
+            if (sizeKB > estimatedSizeKB) {
+                fileSizeInfo.style.color = 'green';
+                fileSizeInfo.style.display = 'block';
+                fileSizeInfo.textContent = 'Estimated File Size: ' + estimatedSizeKB + ' KB (Target Size: ' + sizeKB + ' KB)';
+            } else {
+                fileSizeInfo.style.color = 'red';
+                fileSizeInfo.style.display = 'block';
+                fileSizeInfo.textContent = 'Estimated File Size: ' + estimatedSizeKB + ' KB (Target Size: ' + sizeKB + ' KB)';
+            }
+        }
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    compressBtn.style.display = 'block';
+                    updateEstimatedSize();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        compressBtn.addEventListener('click', function () {
+            const quality = parseFloat(qualityInput.value);
+            const image = new Image();
+            image.src = previewImage.src;
+            image.onload = function () {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = image.width;
+                canvas.height = image.height;
+                ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(function (blob) {
+                    const compressedImage = URL.createObjectURL(blob);
+                    previewImage.src = compressedImage;
+                    downloadBtn.style.display = 'block';
+                    downloadBtn.href = compressedImage;
+                }, 'image/jpeg', quality);
+            };
+        });
+    </script>
+</body>
+
+</html>

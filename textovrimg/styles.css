@@ -1,0 +1,98 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#imageInput {
+    margin-bottom: 10px;
+}
+
+#imageContainer {
+    position: relative;
+    margin-top: 20px;
+    max-width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#selectedImage {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+#textOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-size: 24px;
+    font-family: 'Arial', sans-serif;
+    white-space: nowrap;
+    max-width: 80%;
+    user-select: none;
+    cursor: move;
+}
+
+#textOptions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#textOptions label {
+    margin-right: 10px;
+}
+
+#textOptions input[type="text"],
+#textOptions select,
+#textOptions input[type="color"],
+#textOptions input[type="range"] {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#textOptions input[type="range"] {
+    width: 80%;
+}
+
+#applyTextButton,
+#downloadButton {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#applyTextButton:hover,
+#downloadButton:hover {
+    background-color: #2980b9;
+}
+
+#downloadButton {
+    margin-bottom: 20px;
+}

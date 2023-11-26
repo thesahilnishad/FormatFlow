@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper</title>
+    <!-- Include Cropper.js library -->
+    <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.css">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light gray background */
+            text-align: center;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff; /* White container background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #inputContainer {
+            margin-bottom: 20px;
+        }
+
+        #chooseFile {
+            background-color: #3498db; /* Blue button background */
+            color: #fff; /* White button text */
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #inputImage {
+            display: none;
+        }
+
+        #previewContainer {
+            max-width: 50%; /* Adjust the width as needed */
+            margin: 0 auto;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        #cropButton {
+            background-color: #2ecc71; /* Green button background */
+            color: #fff; /* White button text */
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="inputContainer">
+        <label for="inputImage" id="chooseFile">Choose File</label>
+        <input type="file" id="inputImage" accept="image/*">
+    </div>
+    <div id="previewContainer">
+        <img id="previewImage" src="" alt="Preview">
+    </div>
+
+    <!-- Include Cropper.js library -->
+    <script src="https://unpkg.com/cropperjs"></script>
+
+    <script>
+        document.getElementById('chooseFile').addEventListener('click', function () {
+            document.getElementById('inputImage').click();
+        });
+
+        document.getElementById('inputImage').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var image = document.getElementById('previewImage');
+                    image.src = e.target.result;
+
+                    // Initialize Cropper.js
+                    var cropper = new Cropper(image, {
+                        aspectRatio: 1, // You can set the aspect ratio as needed
+                        viewMode: 2, // Set to 2 for a responsive preview
+                    });
+
+                    // Attach a button click event to crop the image
+                    document.getElementById('cropButton').addEventListener('click', function () {
+                        // Get the cropped data
+                        var croppedData = cropper.getData();
+                        console.log('Cropped Data:', croppedData);
+
+                        // Get the cropped canvas
+                        var croppedCanvas = cropper.getCroppedCanvas();
+
+                        // Create a link element
+                        var downloadLink = document.createElement('a');
+
+                        // Set the download attribute to specify the filename
+                        downloadLink.download = 'cropped_image.png';
+
+                        // Convert the canvas content to a data URL
+                        croppedCanvas.toBlob(function (blob) {
+                            var url = URL.createObjectURL(blob);
+                            downloadLink.href = url;
+
+                            // Append the link to the document
+                            document.body.appendChild(downloadLink);
+
+                            // Trigger a click on the link to start the download
+                            downloadLink.click();
+
+                            // Remove the link from the document
+                            document.body.removeChild(downloadLink);
+                        });
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
+    <button id="cropButton">Crop Image and Download</button>
+</div>
+
+</body>
+</html>

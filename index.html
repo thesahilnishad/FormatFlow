@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="./stylesheet.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>format-flow</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 style="font-size: 50px;" id="format">format</h1>
+        <h1 style="font-size: 80px;" id="flow">flow</h1>
+    </header>
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Features</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a href="./feature/comp.html">compress image</a>
+            <a href="./feature/convertpg.html">png to jpg</a>
+            <a href="./feature/webp.html">jpg to webp</a>
+            <a href="./feature/crop.html">crop image</a>
+            <a href="./feature/filter.html">Edit image</a>
+            <a href="./feature/rotate.html">Rotate image</a>
+            <a href="./pdf/pdfimg.html">pdf to image</a>
+            <a href="./QR/index.html">Generate QR</a>
+            <a href="./textovrimg/perspective.html">text over image</a>
+
+
+
+
+
+        </div>
+    </div>
+    <div class="container">
+        <p id="p1">Welocome Guys, confused about how to change your image formats<br>Don't be, you're at right place</p>
+
+        <div class="infeature">
+            <span>
+                <p>Click below to convert your image from PNG TO JPG</p>
+                <a class="btn" href="./feature/convertpg.html">convert</a>
+            </span>
+            <span>
+                <p>Click below to convert your image from JGP TO WEBP</p>
+                <a class="btn" href="./feature/webp.html">convert</a>
+            </span>
+            <span>
+                <p>Click below to compress your image</p>
+                <a class="btn" href="./feature/comp.html">compress image</a>
+            </span>
+            <span>
+                <p>click here to crop your image</p>
+                <a class="btn" href="./feature/crop.html">crop image</a>
+            </span>
+
+
+
+
+        </div>
+        <p>Want to Convert your link to QR code</p>
+        <a class="btn" href="./QR/index.html">Generate QR</a>
+        <p>Want to rotate your photo</p>
+        <a class="btn" href="./feature/rotate.html">rotate</a>
+        <p>Want to Edit your photo</p>
+        <a class="btn" href="./feature/filter.html">Edit</a>
+        <p>To Text Over your Images</p>
+        <a class="btn" href="./textovrimg/perspective.html">Edit</a>
+        <p>convert your Pdf to image</p>
+        <a class="btn" href="./pdf/pdfimg.html">convert</a>
+
+
+
+    </div>
+    <div>
+        <div class="features">
+            <div class="feature">
+                <h2>Easy to Use</h2>
+                <p>Our tool is simple and user-friendly. Convert images in just a few clicks.</p>
+            </div>
+            <div class="feature">
+                <h2>Fast Conversion</h2>
+                <p>We process your images quickly, so you don't have to wait long for results.</p>
+            </div>
+            <div class="feature">
+                <h2>High-Quality Output</h2>
+                <p>Enjoy high-quality PNG images with our conversion service.</p>
+            </div>
+        </div>
+    </div>
+    <a class="about" href="./about/about.html" id="about">About</a>
+    <script>/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }</script>
+</body>
+
+</html>
