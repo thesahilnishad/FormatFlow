@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+        .input-box {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube Video Downloader</h1>
+    <p>Enter a YouTube video URL to download the video:</p>
+    <div class="input-box">
+        <input type="text" id="youtubeUrl" placeholder="Enter YouTube Video URL" size="50">
+        <button class="btn" onclick="downloadVideo()">Download</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        async function downloadVideo() {
+            const youtubeUrl = document.getElementById("youtubeUrl").value;
+
+            // Validate the YouTube URL and extract the video ID
+            let uniqueID;
+            if (youtubeUrl.includes('youtu.be')) {
+                uniqueID = (youtubeUrl.match(/youtu\.be\/([^?&]+)/) || [, null])[1];
+            } else {
+                uniqueID = (youtubeUrl.match(/[?&]v=([^&]*)/) || [, null])[1];
+            }
+
+            if (!uniqueID) {
+                document.getElementById("result").innerHTML = "<p style='color: red;'>Please enter a valid YouTube URL.</p>";
+                return;
+            }
+
+            // Make an API call to the YouTube Video Downloader API
+            const apiEndpoint = `https://youtube-video-download-info.p.rapidapi.com/dl?id=${uniqueID}`;
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-key": "c6268724camsh78fc570dfc1b600p1a5ca3jsn7b477c1dd095",
+                        "x-rapidapi-host": "youtube-video-download-info.p.rapidapi.com"
+                    }
+                });
+
+                const data = await response.json();
+                if (data.status === "ok" && data.link) {
+                    // Display download links for all available resolutions
+                    let linksHtml = `<p style='color: green;'>Download links available:</p>`;
+                    for (const quality in data.link) {
+                        const link = data.link[quality][0];
+                        const resolution = data.link[quality][3];
+                        const format = data.link[quality][2];
+                        if (link) {
+                            linksHtml += `
+                                <a href="${link}" class="btn" download>
+                                    Download ${resolution} (${format})
+                                </a><br><br>
+                            `;
+                        }
+                    }
+                    document.getElementById("result").innerHTML = linksHtml;
+                } else {
+                    document.getElementById("result").innerHTML = `
+                        <p style='color: red;'>Error: ${data.message || "Failed to fetch download links."}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById("result").innerHTML = `
+                    <p style='color: red;'>An error occurred while processing your request.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

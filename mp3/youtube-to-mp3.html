@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Youtube to MP3 Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .input-box {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>YouTube to MP3 Converter</h1>
+    <p>Enter a YouTube video URL and click convert:</p>
+    <div class="input-box">
+        <input type="text" id="youtubeUrl" placeholder="Enter YouTube Video URL" size="50">
+        <button class="btn" onclick="convertToMp3()">Convert</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        async function convertToMp3() {
+            const youtubeUrl = document.getElementById("youtubeUrl").value;
+
+            // Validate the YouTube URL and extract the video ID
+            let uniqueID;
+            if (youtubeUrl.includes('youtu.be')) {
+                uniqueID = (youtubeUrl.match(/youtu\.be\/([^?&]+)/) || [, null])[1];
+            } else {
+                uniqueID = (youtubeUrl.match(/[?&]v=([^&]*)/) || [, null])[1];
+            }
+
+            if (!uniqueID) {
+                document.getElementById("result").innerHTML = "<p style='color: red;'>Please enter a valid YouTube URL.</p>";
+                return;
+            }
+
+            // Make an API call to a free YouTube-to-MP3 service
+            const apiEndpoint = `https://youtube-mp3-download1.p.rapidapi.com/dl?id=${uniqueID}`;
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: "GET",
+                    headers: {
+                        "x-rapidapi-key": "c6268724camsh78fc570dfc1b600p1a5ca3jsn7b477c1dd095",
+                        "x-rapidapi-host": "youtube-mp3-download1.p.rapidapi.com"
+                    }
+                });
+
+                const data = await response.json();
+                if (data.status === "ok") {
+                    document.getElementById("result").innerHTML = `
+                        <p style='color: green;'>Conversion successful! Download your MP3:</p>
+                        <p style='color: black;font-weight:bold;'>Title:${data.title}</p>
+                        <a href="${data.link}" class="btn" target="_blank">Download MP3</a>
+                    `;
+                } else {
+                    document.getElementById("result").innerHTML = `
+                        <p style='color: red;'>Error: ${data.msg}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById("result").innerHTML = `
+                    <p style='color: red;'>An error occurred while processing your request.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
