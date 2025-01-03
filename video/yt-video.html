@@ -66,7 +66,8 @@
                 const data = await response.json();
                 if (data.status === "ok" && data.link) {
                     // Display download links for all available resolutions
-                    let linksHtml = `<p style='color: green;'>Download links available:</p>`;
+                    let linksHtml = `<p style='color: green;'>Download links available:</p>
+                                    <p style='color: black;font-weight:bold;'>Title:${data.title}</p>`;
                     for (const quality in data.link) {
                         const link = data.link[quality][0];
                         const resolution = data.link[quality][3];
